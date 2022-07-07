@@ -386,3 +386,8 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+
+!viking_room.obj
+!spot_triangulated_good.obj
+!Model\*
