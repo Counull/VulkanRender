@@ -23,7 +23,7 @@ public:
 	void logExtensionSupport(std::vector<vk::ExtensionProperties> logExtensions);
 	void logLayerSupport();
 	void logVulkanApiVersion();
-	void logPhysicalDeviceProperties();
+	void logPhysicalDeviceProperties(vk::PhysicalDevice physicalDevice);
 	void logSwapChainSupport();
 
 

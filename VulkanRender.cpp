@@ -79,7 +79,7 @@ void VulkanRender::drawFrame()
 
 	updateUniformBuffer(currentFrame);
 
-	
+
 	presentCommandBuffers[currentFrame].reset(vk::CommandBufferResetFlagBits(0));
 	recordCommandBuffer(presentCommandBuffers[currentFrame], imageIndex);
 
@@ -1268,7 +1268,7 @@ void VulkanRender::createInstance(const std::vector<const char*>& requiredExtens
 		.setApplicationVersion(1)
 		.setPEngineName("LunarG SDK")
 		.setEngineVersion(1)
-		.setApiVersion(VK_API_VERSION_1_3);
+		.setApiVersion(VK_API_VERSION_1_0);
 
 	// vk::InstanceCreateInfo is where the programmer specifies the layers and/or extensions that
 	// are needed.
@@ -1329,19 +1329,33 @@ void VulkanRender::initPhysicalDevice()
 	devices.resize(deviceCount);
 	instance.enumeratePhysicalDevices(&deviceCount, devices.data());
 
+
 	if (deviceCount == 0) {
 		std::cout << "device not found" << std::endl;
 		return;
 	}
-	physicalDevice = devices[0];
-	msaaSamples = getMaxUsableSampleCount();
 
-#if defined(_DEBUG) 
-	logPhysicalDeviceProperties();
+#if defined(_DEBUG)
+	for (auto& d : devices)
+	{
+		logPhysicalDeviceProperties(d);
+	}
 #endif
 
 
 
+	for (auto& d : devices)
+	{
+		auto properties = d.getProperties();
+		if (properties.deviceType == vk::PhysicalDeviceType::eDiscreteGpu)
+		{
+			physicalDevice = d;
+			msaaSamples = getMaxUsableSampleCount();
+			return;
+		}
+	}
+	physicalDevice = devices[0];
+	msaaSamples = getMaxUsableSampleCount();
 }
 
 void VulkanRender::createLogicalDevice()
@@ -1498,14 +1512,15 @@ void VulkanRender::logVulkanApiVersion()
 	std::cout << "***********************" << std::endl;
 }
 
-void VulkanRender::logPhysicalDeviceProperties()
+void VulkanRender::logPhysicalDeviceProperties(vk::PhysicalDevice device)
 {
 	std::cout << "***********************" << std::endl;
 	std::cout << "Log Physical Device Properties:" << std::endl;
-	auto properties = physicalDevice.getProperties();
+	auto properties = device.getProperties();
 	auto version = properties.apiVersion;
 	std::cout << "device name:" << properties.deviceName << std::endl;
 	std::cout << "device ID:" << properties.deviceID << std::endl;
+	std::cout << "device type" << vk::to_string(properties.deviceType) << std::endl;
 	std::cout << "GPU API Version:" <<
 		VK_API_VERSION_VARIANT(version) << "."
 		<< VK_API_VERSION_MAJOR(version) << "."
@@ -1513,6 +1528,8 @@ void VulkanRender::logPhysicalDeviceProperties()
 		<< VK_API_VERSION_PATCH(version)
 		<< std::endl; //¿ÉÒÔÐ´³Éutil
 	std::cout << "***********************" << std::endl;
+
+
 }
 
 void VulkanRender::logSwapChainSupport()
