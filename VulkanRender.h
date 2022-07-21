@@ -40,11 +40,12 @@ private:
 
 
 	const std::string MODEL_PATH = "Model\\spot\\spot_triangulated_good.obj";
+	//const std::string MODEL_PATH = "D:\\3D\\cube\\cube.obj";
 
 	const std::string TEXTURE_PATH = "Model\\spot\\spot_texture.png";
 
 	vk::SampleCountFlagBits msaaSamples = vk::SampleCountFlagBits::e1;
-
+	//D:\3D\cube
 
 	//const std::string MODEL_PATH = "D:\\3D\\viking_room\\viking_room.obj";
 

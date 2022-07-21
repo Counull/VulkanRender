@@ -183,7 +183,6 @@
     <ClInclude Include="VulkanRender.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="InputVert.vert" />
     <None Include="Shader\frag.spv" />
     <None Include="Shader\fragment.frag" />
     <None Include="Shader\vert.spv" />

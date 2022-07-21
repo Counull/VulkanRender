@@ -21,12 +21,27 @@ layout(location = 0) out vec3 fragColor;
 layout(location = 1) out vec3 fragNormal;
 layout(location = 2) out vec2 fragTexCoord;
 
+layout(location=3) out vec3 worldPos;
+
+ 
+
 
 void main()
 {
+
+    
+
    gl_Position = ubo.proj * ubo.view * ubo.model * vec4(inPosition, 1.0);
     fragColor =inColor;
-    fragNormal = inNormal;
-    fragTexCoord = inTexCoord;
+  
+ // fragNormal = inNormal;
+  fragNormal = vec3(inNormal* mat3( inverse(ubo.model))); //法向量不应受位移影响 所以w=0
+   worldPos = vec3(ubo.model*vec4(inPosition, 1.0));
+
+  //  fragNormal = vec3(mat3( transpose( inverse(ubo.model))) *inNormal ); 
+ 
+   
+   
+   fragTexCoord = inTexCoord;
 
 }

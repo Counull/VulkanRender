@@ -80,9 +80,6 @@
     <None Include="Shader\frag.spv">
       <Filter>Resource Files\spv</Filter>
     </None>
-    <None Include="InputVert.vert">
-      <Filter>Resource Files\glsl</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="__TemplateIcon.ico">
